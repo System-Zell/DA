@@ -30,7 +30,7 @@ end
 if game.PlaceId == GameIDMain then
 	local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 	
-	local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Adventures Hub | Droid", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+	local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Adventures Hub | Droid", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest", IntroEnabled = true, IntroText = "Loading Droid Hub"})
 	
 	-- Main Tab
 	local MainTab = Window:MakeTab({
@@ -50,7 +50,7 @@ if game.PlaceId == GameIDMain then
 		PremiumOnly = false
 	})
 	
-	local PlotSection = MainTab:AddSection({
+	local PlotSection = TeleportTab:AddSection({
 		Name = "Plots"
 	})
 	
