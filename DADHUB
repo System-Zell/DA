@@ -14,23 +14,61 @@ local PlrPlot = Plr.Name.."_Plot"
 
 -- Func
 
-function tweenToPart(targetPart, speed)
+local function getModelCenter(model)
+	local totalPosition = Vector3.new(0, 0, 0)
+	local partCount = 0
+
+	for _, part in pairs(model:GetDescendants()) do
+		if part:IsA("BasePart") then
+			totalPosition = totalPosition + part.Position
+			partCount = partCount + 1
+		end
+	end
+
+	if partCount > 0 then
+		return totalPosition / partCount
+	else
+		warn("Model has no BaseParts.")
+		return nil
+	end
+end
+
+local function tweenToPart(player, target, speed)
 	local tweenService = game:GetService("TweenService")
 
-	local humanoidRootPart = Plr.Character:WaitForChild("HumanoidRootPart")
 
-	local distance = (targetPart.Position - humanoidRootPart.Position).Magnitude
+	local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
+
+	if target:IsA("Model") then
+
+		if target.PrimaryPart then
+			target = target.PrimaryPart.Position
+		else
+			local centerPosition = getModelCenter(target)
+			if centerPosition then
+				target = centerPosition
+			else
+				return 
+			end
+		end
+	else
+		target = target.Position 
+	end
+
+	local distance = (target - humanoidRootPart.Position).Magnitude
 
 	local travelTime = distance / speed
 
 	local tweeningInformation = TweenInfo.new(travelTime, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
 
-	local partProperties = {Position = targetPart.Position}
+	local partProperties = {Position = target}
 
 	local tween = tweenService:Create(humanoidRootPart, tweeningInformation, partProperties)
 
 	tween:Play()
 end
+
+
 
 if game.PlaceId == GameIDMain then
 	print(PlrPlot)
@@ -65,6 +103,7 @@ if game.PlaceId == GameIDMain then
 		Callback = function()
 			local Plot = game.Workspace.Interactions.Plots.Plots:FindFirstChild(PlrPlot)
 			tweenToPart(Plot, 15)
+			
 			
 			local args = {
 				[1] = "Plot",
