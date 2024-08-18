@@ -102,7 +102,7 @@ if game.PlaceId == GameIDMain then
 		Name = "Teleport to Plot",
 		Callback = function()
 			local Plot = game.Workspace.Interactions.Plots.Plots:FindFirstChild(PlrPlot)
-			tweenToPart(Plot, 15)
+			tweenToPart(Plr, Plot, 15)
 			
 			
 			local args = {
