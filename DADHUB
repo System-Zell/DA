@@ -1,0 +1,68 @@
+local GameIDMain = 3475397644
+local GameIDEvent = 0000
+local GameIDW1 = 000
+local Plr = game.Players.LocalPlayer
+print("Script Executed "..game.PlaceId)
+
+-- Var
+
+
+-- Func
+
+function tweenToPart(targetPart, speed)
+	local tweenService = game:GetService("TweenService")
+
+	local humanoidRootPart = Plr.Character:WaitForChild("HumanoidRootPart")
+
+	local distance = (targetPart.Position - humanoidRootPart.Position).Magnitude
+
+	local travelTime = distance / speed
+
+	local tweeningInformation = TweenInfo.new(travelTime, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+
+	local partProperties = {Position = targetPart.Position}
+
+	local tween = tweenService:Create(humanoidRootPart, tweeningInformation, partProperties)
+
+	tween:Play()
+end
+
+if game.PlaceId == GameIDMain then
+	local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+	
+	local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Adventures Hub | Droid", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+	
+	-- Main Tab
+	local MainTab = Window:MakeTab({
+		Name = "Home",
+		Icon = nil,
+		PremiumOnly = false
+	})
+	
+	local AutoSection = MainTab:AddSection({
+		Name = "Auto Droids"
+	})
+	
+	-- Teleport Tab
+	local TeleportTab = Window:MakeTab({
+		Name = "Teleport",
+		Icon = nil,
+		PremiumOnly = false
+	})
+	
+	local PlotSection = MainTab:AddSection({
+		Name = "Plots"
+	})
+	
+	TeleportTab:AddButton({
+		Name = "Teleport to Plot",
+		Callback = function()
+			local args = {
+				[1] = "Plot",
+				[2] = Plr.Name.."_Plot"
+			}
+
+			game:GetService("ReplicatedStorage").Remotes.GetTeleportRemote:InvokeServer(unpack(args))
+		end    
+	})
+end
