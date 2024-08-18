@@ -5,7 +5,7 @@ local Plr = game.Players.LocalPlayer
 print("Script Executed "..game.PlaceId)
 
 -- Var
-local PlrPlot = Plr.DisplayName.."_Plot"
+local PlrPlot = Plr.Name.."_Plot"
 
 -- Func
 
