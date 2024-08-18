@@ -4,6 +4,11 @@ local GameIDW1 = 000
 local Plr = game.Players.LocalPlayer
 print("Script Executed "..game.PlaceId)
 
+--[[ Notes
+game.Workspace.Interactions.Nodes.Eggs
+
+]] 
+
 -- Var
 local PlrPlot = Plr.Name.."_Plot"
 
@@ -58,6 +63,9 @@ if game.PlaceId == GameIDMain then
 	TeleportTab:AddButton({
 		Name = "Teleport to Plot",
 		Callback = function()
+			local Plot = game.Workspace.Interactions.Plots.Plots:FindFirstChild(PlrPlot)
+			tweenToPart(Plot, 15)
+			
 			local args = {
 				[1] = "Plot",
 				[2] = PlrPlot
