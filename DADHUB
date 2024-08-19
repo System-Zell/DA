@@ -142,13 +142,12 @@ if game.PlaceId == GameIDEvent then
 		Callback = function(Value)
 			if Value == true then
 				AutoSunDB = true
-
 				local WaterCollected = game.Players.LocalPlayer.Data.SolsticeEvent2024.WaterEssence
 
 				while AutoSunDB == true do
 					wait(1)
 
-					if CollectingSun == false then
+					if not CollectingSun then
 						CollectingSun = true
 
 						for _, obj in pairs(workspace:GetDescendants()) do
@@ -178,7 +177,7 @@ if game.PlaceId == GameIDEvent then
 											local humanoidRootPart = character.HumanoidRootPart
 											local tweenService = game:GetService("TweenService")
 											local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-											local tween = tweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(obj.Position + Vector3.new(0, 5, 0))})
+											local tween = tweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(sun.Position + Vector3.new(0, 5, 0))})
 											tween:Play()
 											wait(1)
 											for i = 1, 4 do
@@ -196,20 +195,25 @@ if game.PlaceId == GameIDEvent then
 
 												game:GetService("ReplicatedStorage").Remotes.FlowerDropsRemote:FireServer(unpack(args))
 											end
-											
+
 											CollectingSun = false
+											break  -- Exit the loop after watering one sunflower
 										end
 									end
 								end
 							end
 						end
+
+						-- Reset the CollectingSun flag after all operations
+						CollectingSun = false
 					end
 				end
-				
+
 			elseif Value == false then
 				CollectingSun = false
 				AutoSunDB = false
 			end
-		end    
+		end
+
 	})
 end
