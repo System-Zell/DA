@@ -1,5 +1,5 @@
 local GameIDMain = 3475397644
-local GameIDEvent = 0000
+local GameIDEvent = 5777228223
 local GameIDW1 = 000
 local Plr = game.Players.LocalPlayer
 print("Script Executed "..game.PlaceId)
@@ -68,6 +68,9 @@ local function tweenToPart(player, target, speed)
 	tween:Play()
 end
 
+function tween(Pos, Time)
+	
+end
 
 
 if game.PlaceId == GameIDMain then
@@ -111,6 +114,100 @@ if game.PlaceId == GameIDMain then
 			}
 
 			game:GetService("ReplicatedStorage").Remotes.GetTeleportRemote:InvokeServer(unpack(args))
+		end    
+	})
+end
+
+if game.PlaceId == GameIDEvent then
+	local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+	local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Adventures Hub | Droid | Event", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest", IntroEnabled = true, IntroText = "Loading Droid Hub"})
+	
+	_G.AutoSunDB = false
+	_G.CollectingSun = false
+	
+	local MainTab = Window:MakeTab({
+		Name = "Home",
+		Icon = nil,
+		PremiumOnly = false
+	})
+	
+	local AutoSection = MainTab:AddSection({
+		Name = "Auto Droid - Unequip all Dragons"
+	})
+	
+	MainTab:AddToggle({
+		Name = "Auto Sunflower",
+		Default = false,
+		Callback = function(Value)
+			if Value == true then
+				_G.AutoSunDB = true
+
+				local WaterCollected = game.Players.LocalPlayer.Data.SolsticeEvent2024.WaterEssence
+
+				while _G.AutoSunDB == true do
+					wait(1)
+
+					if _G.CollectingSun == false then
+						_G.CollectingSun = true
+
+						for _, obj in pairs(workspace:GetDescendants()) do
+							if obj:IsA("Attachment") and obj.Name == "WaterItemSpawnAttachment" then
+								local character = game.Players.LocalPlayer.Character
+								local humanoidRootPart = character.HumanoidRootPart
+								local tweenService = game:GetService("TweenService")
+								local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+
+								if WaterCollected.Value < 400 then
+									local tween = tweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(obj.Position)})
+									tween:Play()
+									wait(1)
+									local args = { [1] = obj }
+									game:GetService("ReplicatedStorage").Remotes.GrabItemRemote:FireServer(unpack(args))
+									print("Collected Water")
+									wait(1)
+
+								elseif WaterCollected.Value >= 400 then
+									print("Attempt to water sunflowers")
+
+									local found = false
+									for _, sun in pairs(workspace:GetDescendants()) do
+										if sun.Name == "SolsticeFlower" and not found then
+											found = true
+											local character = game.Players.LocalPlayer.Character
+											local humanoidRootPart = character.HumanoidRootPart
+											local tweenService = game:GetService("TweenService")
+											local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+											local tween = tweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(sun.Position)})
+											tween:Play()
+											wait(1)
+											for i = 1, 4 do
+												print("Watering Plant: "..i)
+												local args = { [1] = sun }
+												game:GetService("ReplicatedStorage").Remotes.UseItemOnFlowerRemote:InvokeServer(unpack(args))
+												wait(0.8)
+											end
+											wait(1)
+											for i = 1, 2 do
+												local args = {
+													[1] = sun,
+													[2] = i
+												}
+
+												game:GetService("ReplicatedStorage").Remotes.FlowerDropsRemote:FireServer(unpack(args))
+											end									
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+				
+			elseif Value == false then
+				_G.CollectingSun = false
+				_G.AutoSunDB = false
+			end
 		end    
 	})
 end
