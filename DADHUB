@@ -98,11 +98,11 @@ if game.PlaceId == GameIDMain then
 	})
 	
 	local PlotSection = TeleportTab:AddSection({
-		Name = "Plots"
+		Name = "Plots - Not Working"
 	})
 	
 	TeleportTab:AddButton({
-		Name = "Teleport to Plot",
+		Name = "TP - Home Plot",
 		Callback = function()
 			local Plot = game.Workspace.Interactions.Plots.Plots:FindFirstChild(PlrPlot)
 			tweenToPart(Plr, Plot, 15)
@@ -114,6 +114,26 @@ if game.PlaceId == GameIDMain then
 			}
 
 			game:GetService("ReplicatedStorage").Remotes.GetTeleportRemote:InvokeServer(unpack(args))
+		end    
+	})
+	
+	-- Events Tab
+	
+	local EventsTab = Window:MakeTab({
+		Name = "Events",
+		Icon = nil,
+		PremiumOnly = false
+	})
+	
+	EventsTab:AddButton({
+		Name = "TP - Events World",
+		Callback = function()
+			local args = {
+				[1] = 5777228223,
+				[2] = {}
+			}
+
+			game:GetService("ReplicatedStorage").Remotes.WorldTeleportRemote:InvokeServer(unpack(args))
 		end    
 	})
 end
