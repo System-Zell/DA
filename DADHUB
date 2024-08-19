@@ -123,8 +123,8 @@ if game.PlaceId == GameIDEvent then
 
 	local Window = OrionLib:MakeWindow({Name = "🐉 Dragon Adventures Hub | Droid | Event", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest", IntroEnabled = true, IntroText = "Loading Droid Hub"})
 	
-	_G.AutoSunDB = false
-	_G.CollectingSun = false
+	local AutoSunDB = false
+	local CollectingSun = false
 	
 	local MainTab = Window:MakeTab({
 		Name = "Home",
@@ -141,15 +141,15 @@ if game.PlaceId == GameIDEvent then
 		Default = false,
 		Callback = function(Value)
 			if Value == true then
-				_G.AutoSunDB = true
+				AutoSunDB = true
 
 				local WaterCollected = game.Players.LocalPlayer.Data.SolsticeEvent2024.WaterEssence
 
-				while _G.AutoSunDB == true do
+				while AutoSunDB == true do
 					wait(1)
 
-					if _G.CollectingSun == false then
-						_G.CollectingSun = true
+					if CollectingSun == false then
+						CollectingSun = true
 
 						for _, obj in pairs(workspace:GetDescendants()) do
 							if obj:IsA("Attachment") and obj.Name == "WaterItemSpawnAttachment" then
@@ -158,7 +158,7 @@ if game.PlaceId == GameIDEvent then
 								local tweenService = game:GetService("TweenService")
 								local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
 
-								if WaterCollected.Value < 400 then
+								if WaterCollected.Value < 1000 then
 									local tween = tweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(obj.Position)})
 									tween:Play()
 									wait(1)
@@ -167,7 +167,7 @@ if game.PlaceId == GameIDEvent then
 									print("Collected Water")
 									wait(1)
 
-								elseif WaterCollected.Value >= 400 then
+								elseif WaterCollected.Value >= 1000 then
 									print("Attempt to water sunflowers")
 
 									local found = false
@@ -178,7 +178,7 @@ if game.PlaceId == GameIDEvent then
 											local humanoidRootPart = character.HumanoidRootPart
 											local tweenService = game:GetService("TweenService")
 											local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-											local tween = tweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(sun.Position)})
+											local tween = tweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(obj.Position + Vector3.new(0, 5, 0))})
 											tween:Play()
 											wait(1)
 											for i = 1, 4 do
@@ -205,8 +205,8 @@ if game.PlaceId == GameIDEvent then
 				end
 				
 			elseif Value == false then
-				_G.CollectingSun = false
-				_G.AutoSunDB = false
+				CollectingSun = false
+				AutoSunDB = false
 			end
 		end    
 	})
